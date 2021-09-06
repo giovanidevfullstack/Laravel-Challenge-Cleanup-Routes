@@ -14,31 +14,38 @@ use App\Http\Controllers\Admin\AdminDashboardController;
 Route::get('/', HomeController::class)->name('home');
 
 Route::middleware(['auth'])->group(function () {
-    //books
-    Route::get('book/create', [BookController::class, 'create'])->name('books.create');
-    Route::post('book/store', [BookController::class, 'store'])->name('books.store');
-    Route::get('user/books', [BookController::class, 'index'])->name('user.books.list');
-    Route::get('user/books/{book:slug}/edit', [BookController::class, 'edit'])->name('user.books.edit');
-    Route::put('user/books/{book:slug}', [BookController::class, 'update'])->name('user.books.update');
-    Route::delete('user/books/{book}', [BookController::class, 'destroy'])->name('user.books.destroy');
+    //Books
+    Route::name('books.')->group(function () {
+        //Books
+        Route::get('book/create', [BookController::class, 'create'])->name('create');
+        Route::post('book/store', [BookController::class, 'store'])->name('store');
 
-    //books report
-    Route::get('book/{book:slug}/report/create', [BookReportController::class, 'create'])->name('books.report.create');
-    Route::post('book/{book}/report', [BookReportController::class, 'store'])->name('books.report.store');
+        //Reports
+        Route::get('book/{book:slug}/report/create', [BookReportController::class, 'create'])->name('report.create');
+        Route::post('book/{book}/report', [BookReportController::class, 'store'])->name('report.store');
+    });
 
-    //order
-    Route::get('user/orders', [OrderController::class, 'index'])->name('user.orders.index');
+    //User Routes
+    Route::name('user.')->group(function () {
+        //Books
+        Route::get('user/books', [BookController::class, 'index'])->name('books.list');
+        Route::get('user/books/{book:slug}/edit', [BookController::class, 'edit'])->name('books.edit');
+        Route::put('user/books/{book:slug}', [BookController::class, 'update'])->name('books.update');
+        Route::delete('user/books/{book}', [BookController::class, 'destroy'])->name('books.destroy');
 
-    //User Settings
-    Route::get('user/settings', [UserSettingsController::class, 'index'])->name('user.settings');
-    Route::post('user/settings/{user}', [UserSettingsController::class, 'update'])->name('user.settings.update');
-    Route::post('user/settings/password/change/{user}', [UserChangePassword::class, 'update'])->name('user.password.update');
+        //Settings
+        Route::get('user/settings', [UserSettingsController::class, 'index'])->name('settings');
+        Route::post('user/settings/{user}', [UserSettingsController::class, 'update'])->name('settings.update');
+        Route::post('user/settings/password/change/{user}', [UserChangePassword::class, 'update'])->name('password.update');
+
+        //Orders
+        Route::get('user/orders', [OrderController::class, 'index'])->name('orders.index');
+    });
 });
-
 
 Route::get('book/{book:slug}', [BookController::class, 'show'])->name('books.show');
 
-
+//Admin Routes
 Route::middleware(['isAdmin'])->group(function () {
     Route::get('admin', AdminDashboardController::class)->name('admin.index');
 
