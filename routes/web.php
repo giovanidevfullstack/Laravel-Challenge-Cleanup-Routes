@@ -9,6 +9,7 @@ use App\Http\Controllers\UserSettingsController;
 use App\Http\Controllers\UserChangePassword;
 use App\Http\Controllers\Admin\AdminBookController;
 use App\Http\Controllers\Admin\AdminUsersController;
+use App\Http\Controllers\Admin\AdminDashboardController;
 
 Route::get('/', HomeController::class)->name('home');
 
@@ -20,6 +21,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('user/books/{book:slug}/edit', [BookController::class, 'edit'])->name('user.books.edit');
     Route::put('user/books/{book:slug}', [BookController::class, 'update'])->name('user.books.update');
     Route::delete('user/books/{book}', [BookController::class, 'destroy'])->name('user.books.destroy');
+    // Route::resource('books', BookController::class); 
 
     //books report
     Route::get('book/{book:slug}/report/create', [BookReportController::class, 'create'])->name('books.report.create');
@@ -39,7 +41,7 @@ Route::get('book/{book:slug}', [BookController::class, 'show'])->name('books.sho
 
 
 Route::middleware(['isAdmin'])->group(function () {
-    Route::get('admin', \App\Http\Controllers\Admin\AdminDashboardController::class)->name('admin.index');
+    Route::get('admin', AdminDashboardController::class)->name('admin.index');
 
     Route::get('admin/books', [AdminBookController::class, 'index'])->name('admin.books.index');
     Route::get('admin/books/create', [AdminBookController::class, 'create'])->name('admin.books.create');
