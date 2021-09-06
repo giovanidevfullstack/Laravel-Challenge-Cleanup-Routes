@@ -32,7 +32,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('user/books/{book:slug}/edit', [BookController::class, 'edit'])->name('books.edit');
         Route::put('user/books/{book:slug}', [BookController::class, 'update'])->name('books.update');
         Route::delete('user/books/{book}', [BookController::class, 'destroy'])->name('books.destroy');
-
+        //Route::resource('books', BookController::class)->only(['edit', 'update', 'destroy']);
+        
         //Settings
         Route::get('user/settings', [UserSettingsController::class, 'index'])->name('settings');
         Route::post('user/settings/{user}', [UserSettingsController::class, 'update'])->name('settings.update');
