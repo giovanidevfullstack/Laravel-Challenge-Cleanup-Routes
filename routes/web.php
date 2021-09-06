@@ -43,13 +43,15 @@ Route::get('book/{book:slug}', [BookController::class, 'show'])->name('books.sho
 Route::middleware(['isAdmin'])->group(function () {
     Route::get('admin', AdminDashboardController::class)->name('admin.index');
 
-    Route::get('admin/books', [AdminBookController::class, 'index'])->name('admin.books.index');
-    Route::get('admin/books/create', [AdminBookController::class, 'create'])->name('admin.books.create');
-    Route::post('admin/books', [AdminBookController::class, 'store'])->name('admin.books.store');
-    Route::get('admin/books/{book}/edit', [AdminBookController::class, 'edit'])->name('admin.books.edit');
-    Route::put('admin/books/{book}', [AdminBookController::class, 'update'])->name('admin.books.update');
-    Route::delete('admin/books/{book}', [AdminBookController::class, 'destroy'])->name('admin.books.destroy');
-    Route::put('admin/book/approve/{book}', [AdminBookController::class, 'approveBook'])->name('admin.books.approve');
+    Route::name('admin.books.')->group(function () {
+        Route::get('admin/books', [AdminBookController::class, 'index'])->name('index');
+        Route::get('admin/books/create', [AdminBookController::class, 'create'])->name('create');
+        Route::post('admin/books', [AdminBookController::class, 'store'])->name('store');
+        Route::get('admin/books/{book}/edit', [AdminBookController::class, 'edit'])->name('edit');
+        Route::put('admin/books/{book}', [AdminBookController::class, 'update'])->name('update');
+        Route::delete('admin/books/{book}', [AdminBookController::class, 'destroy'])->name('destroy');
+        Route::put('admin/book/approve/{book}', [AdminBookController::class, 'approveBook'])->name('approve');
+    });
 
     Route::get('admin/users', [AdminUsersController::class, 'index'])->name('admin.users.index');
     Route::get('admin/users/{user}/edit', [AdminUsersController::class, 'edit'])->name('admin.users.edit');
