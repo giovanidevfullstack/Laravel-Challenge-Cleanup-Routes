@@ -21,7 +21,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('user/books/{book:slug}/edit', [BookController::class, 'edit'])->name('user.books.edit');
     Route::put('user/books/{book:slug}', [BookController::class, 'update'])->name('user.books.update');
     Route::delete('user/books/{book}', [BookController::class, 'destroy'])->name('user.books.destroy');
-    // Route::resource('books', BookController::class); 
 
     //books report
     Route::get('book/{book:slug}/report/create', [BookReportController::class, 'create'])->name('books.report.create');
@@ -44,22 +43,9 @@ Route::middleware(['isAdmin'])->group(function () {
     Route::get('admin', AdminDashboardController::class)->name('admin.index');
 
     Route::name('admin.')->group(function () {
-        Route::name('books.')->group(function () {
-            Route::get('admin/books', [AdminBookController::class, 'index'])->name('index');
-            Route::get('admin/books/create', [AdminBookController::class, 'create'])->name('create');
-            Route::post('admin/books', [AdminBookController::class, 'store'])->name('store');
-            Route::get('admin/books/{book}/edit', [AdminBookController::class, 'edit'])->name('edit');
-            Route::put('admin/books/{book}', [AdminBookController::class, 'update'])->name('update');
-            Route::delete('admin/books/{book}', [AdminBookController::class, 'destroy'])->name('destroy');
-            Route::put('admin/book/approve/{book}', [AdminBookController::class, 'approveBook'])->name('approve');
-        });
-
-        Route::name('users.')->group(function () {
-            Route::get('admin/users', [AdminUsersController::class, 'index'])->name('index');
-            Route::get('admin/users/{user}/edit', [AdminUsersController::class, 'edit'])->name('edit');
-            Route::put('admin/users/{user}', [AdminUsersController::class, 'update'])->name('update');
-            Route::delete('admin/users/{user}', [AdminUsersController::class, 'destroy'])->name('destroy');
-        });
+        Route::put('admin/book/approve/{book}', [AdminBookController::class, 'approveBook'])->name('books.approve');
+        Route::resource('books', AdminBookController::class); 
+        Route::resource('users', AdminUsersController::class); 
     });
 });
 
