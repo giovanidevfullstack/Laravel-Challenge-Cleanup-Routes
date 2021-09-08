@@ -9,11 +9,6 @@ use App\Http\Controllers\{
     UserSettingsController,
     UserChangePassword
 };
-use App\Http\Controllers\Admin\{
-    AdminBookController,
-    AdminUsersController,
-    AdminDashboardController
-};
 
 Route::get('/', HomeController::class)->name('home');
 
@@ -49,16 +44,5 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::get('book/{book:slug}', [BookController::class, 'show'])->name('books.show');
-
-//Admin Routes
-Route::middleware(['isAdmin'])->group(function () {
-    Route::get('admin', AdminDashboardController::class)->name('admin.index');
-
-    Route::name('admin.')->group(function () {
-        Route::put('admin/book/approve/{book}', [AdminBookController::class, 'approveBook'])->name('books.approve');
-        Route::resource('books', AdminBookController::class); 
-        Route::resource('users', AdminUsersController::class); 
-    });
-});
 
 require __DIR__ . '/auth.php';
